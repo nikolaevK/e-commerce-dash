@@ -3,9 +3,7 @@
 import StoreModal from "@/components/modals/StoreModal";
 import React, { useEffect, useState } from "react";
 
-type Props = {};
-
-export default function ModalProvider({}: Props) {
+export default function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
