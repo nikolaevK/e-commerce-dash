@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import axios from "axios";
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -27,6 +29,8 @@ type FormSchema = z.infer<typeof formSchema>;
 export default function StoreModal() {
   const { isOpen, onClose } = useStoreModal();
 
+  const [loading, setLoading] = useState(false);
+
   // extracting the type from formSchema
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -36,7 +40,17 @@ export default function StoreModal() {
   });
 
   async function onSubmit(values: FormSchema) {
-    console.log(values);
+    try {
+      setLoading(true);
+
+      const response = await axios.post("/api/stores", values);
+      console.log(typeof response);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }
   return (
     <Modal
@@ -56,17 +70,23 @@ export default function StoreModal() {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="E-Commerce" {...field} />
+                      <Input
+                        disabled={loading}
+                        placeholder="E-Commerce"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-                <Button variant="outline" onClick={onClose}>
+                <Button variant="outline" onClick={onClose} disabled={loading}>
                   Cancel
                 </Button>
-                <Button type="submit">Continue</Button>
+                <Button type="submit" disabled={loading}>
+                  Continue
+                </Button>
               </div>
             </form>
           </Form>
