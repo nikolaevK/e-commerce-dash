@@ -19,9 +19,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
-  name: z.string().min(1),
+  name: z.string().min(3),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -42,12 +43,10 @@ export default function StoreModal() {
   async function onSubmit(values: FormSchema) {
     try {
       setLoading(true);
-
       const response = await axios.post("/api/stores", values);
-      console.log(typeof response);
-      console.log(response);
+      toast.success("Store Created");
     } catch (error) {
-      console.log(error);
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -81,11 +80,20 @@ export default function StoreModal() {
                 )}
               />
               <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-                <Button variant="outline" onClick={onClose} disabled={loading}>
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={onClose}
+                  disabled={loading}
+                >
                   Cancel
                 </Button>
                 <Button type="submit" disabled={loading}>
-                  Continue
+                  {loading ? (
+                    <div className="animate-spin border-2 border-t-2 border-white-500 border-t-blue-600  h-5 w-5 border-spacing-1 rounded-full"></div>
+                  ) : (
+                    "Continue"
+                  )}
                 </Button>
               </div>
             </form>

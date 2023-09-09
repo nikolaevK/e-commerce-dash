@@ -1,6 +1,5 @@
 "use client";
 
-import Modal from "@/components/ui/modal";
 import { useStoreModal } from "@/hooks/UseStoreModal";
 import { useEffect } from "react";
 
@@ -12,5 +11,5 @@ export default function RootPage() {
     if (!isOpen) onOpen();
   }, [isOpen, onOpen]);
 
-  return <div className="p-4">root page</div>;
+  return null;
 }
