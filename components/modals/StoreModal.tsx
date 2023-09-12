@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -29,6 +30,7 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export default function StoreModal() {
   const { isOpen, onClose } = useStoreModal();
+  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
 
@@ -43,8 +45,13 @@ export default function StoreModal() {
   async function onSubmit(values: FormSchema) {
     try {
       setLoading(true);
-      const response = await axios.post("/api/stores", values);
-      toast.success("Store Created");
+      // return Store object with id, name etc
+      const {
+        data: { id: storeId },
+      } = await axios.post("/api/stores", values);
+      // Window.location is used instead of router.push due to the initial modal
+      // for it to close the page needs to be reloaded fully
+      window.location.assign(`/${storeId}`);
     } catch (error) {
       toast.error("Something went wrong");
     } finally {

@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs";
 import React from "react";
 import { redirect } from "next/navigation";
 import prismadb from "@/lib/prismadb";
+import Navbar from "@/components/Navbar";
 
 interface LayoutInterface {
   children: React.ReactNode;
@@ -37,7 +38,7 @@ export default async function layout({
 
   return (
     <>
-      <div>this will be nav </div>
+      <Navbar />
       {children}
     </>
   );
