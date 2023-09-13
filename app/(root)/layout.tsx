@@ -25,6 +25,7 @@ export default async function InitialLayout({
     // redirects to other page for that particular store
     redirect(`/${store.id}`);
   }
-  // If no store it will render children meaning nested route pages
+  // If no store it will render children meaning nested route => page.tsx
+  // It will trigger Create Store Modal
   return <>{children}</>;
 }
