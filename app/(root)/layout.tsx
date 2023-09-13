@@ -25,6 +25,6 @@ export default async function InitialLayout({
     // redirects to other page for that particular store
     redirect(`/${store.id}`);
   }
-
+  // If no store it will render children meaning nested route pages
   return <>{children}</>;
 }

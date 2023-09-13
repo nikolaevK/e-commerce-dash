@@ -15,6 +15,11 @@ export default function NavRoutes({ className, ...props }: NavRoutesInterface) {
   const routes = [
     {
       href: `/${storeId}`,
+      label: "Dashboard",
+      active: pathname === `/${storeId}`,
+    },
+    {
+      href: `/${storeId}/settings`,
       label: "Settings",
       active: pathname === `/${storeId}/settings`,
     },

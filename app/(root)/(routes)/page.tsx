@@ -6,7 +6,7 @@ import { useEffect } from "react";
 export default function RootPage() {
   const { onOpen, isOpen } = useStoreModal();
 
-  // Does not allow to close the modal
+  // Does not allow to close the modal if store does not exist
   useEffect(() => {
     // initially open Modal to choose or create new store
     if (!isOpen) onOpen();

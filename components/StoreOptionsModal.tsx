@@ -54,20 +54,14 @@ export default function StoreOptionsModal({
     (store) => store.storeId === params.storeId
   );
 
-  function onStoreSelect({
-    storeId,
-    label,
-  }: {
-    storeId: string;
-    label: string;
-  }) {
+  function onStoreSelect(storeId: string) {
     setStoreOptionsOpen(false);
     router.push(`/${storeId}`);
   }
 
   return (
     <Popover open={storeOptionsOpen} onOpenChange={setStoreOptionsOpen}>
-      <PopoverTrigger>
+      <PopoverTrigger asChild>
         <Button
           variant="outline"
           size="sm"
@@ -83,14 +77,14 @@ export default function StoreOptionsModal({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
+          <CommandInput placeholder="Search store..." />
           <CommandList>
-            <CommandInput placeholder="Search store..." />
             <CommandEmpty>No store found</CommandEmpty>
             <CommandGroup heading="Stores">
               {formattedStores.map((store) => (
                 <CommandItem
                   key={store.storeId}
-                  onSelect={() => onStoreSelect(store)}
+                  onSelect={() => onStoreSelect(store.storeId)}
                   className="text-sm"
                 >
                   <StoreIcon className="mr-2 h-4 w-4" />

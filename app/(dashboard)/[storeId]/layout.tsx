@@ -38,6 +38,7 @@ export default async function layout({
 
   return (
     <>
+      {/* @ts-expect-error Async Server Component */}
       <Navbar />
       {children}
     </>

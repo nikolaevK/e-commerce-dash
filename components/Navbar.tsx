@@ -4,9 +4,7 @@ import StoreOptionsModal from "@/components/StoreOptionsModal";
 import { redirect } from "next/navigation";
 import prismadb from "@/lib/prismadb";
 
-interface NavbarInterface {}
-
-export default async function Navbar({}: NavbarInterface) {
+export default async function Navbar() {
   const { userId } = auth();
 
   if (!userId) {
@@ -19,9 +17,6 @@ export default async function Navbar({}: NavbarInterface) {
     },
   });
 
-  if (!stores) {
-    stores = [];
-  }
   return (
     <section className="border-b">
       <div className="flex h-16 items-center px-4">
