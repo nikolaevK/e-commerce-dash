@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import ApiAlert from "@/components/ui/ApiAlert";
 import { Separator } from "@/components/ui/separator";
 import Heading from "@/components/ui/Heading";
 import { Store } from "@prisma/client";
@@ -8,7 +9,7 @@ import { Trash } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Form,
   FormControl,
@@ -38,6 +39,7 @@ export default function SettingsForm({ store }: SettingsFormProps) {
   const router = useRouter();
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [url, setUrl] = useState("");
 
   const form = useForm<SettingsFormType>({
     resolver: zodResolver(formSchema),
@@ -46,8 +48,14 @@ export default function SettingsForm({ store }: SettingsFormProps) {
 
   async function onSubmit({ name: storeName }: SettingsFormType) {
     try {
+      if (storeName === store.name) {
+        toast.error("Change store's name");
+        return;
+      }
+
       setLoading(true);
       await axios.patch(`/api/stores/${params.storeId}`, { storeName });
+
       router.refresh();
       toast.success("Store updated");
     } catch (error) {
@@ -61,6 +69,7 @@ export default function SettingsForm({ store }: SettingsFormProps) {
     try {
       setLoading(true);
       await axios.delete(`/api/stores/${params.storeId}`);
+
       router.refresh();
       router.push("/");
       toast.success("Store deleted");
@@ -71,6 +80,11 @@ export default function SettingsForm({ store }: SettingsFormProps) {
       setOpenModal(false);
     }
   }
+
+  // waits until component loads in order to get client origin
+  useEffect(() => {
+    setUrl(window.location.origin);
+  }, [url]);
 
   return (
     <>
@@ -119,11 +133,15 @@ export default function SettingsForm({ store }: SettingsFormProps) {
               )}
             />
           </div>
-          <Button disabled={loading} className="">
-            Save Changes
-          </Button>
+          <Button disabled={loading}>Save Changes</Button>
         </form>
       </Form>
+      <Separator />
+      <ApiAlert
+        description={`${url}/api/${params.storeId}`}
+        title="NEXT_PUBLIC_API_URL"
+        variant="public"
+      />
     </>
   );
 }
