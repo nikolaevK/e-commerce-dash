@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import ApiAlert from "@/components/ui/ApiAlert";
 import { Separator } from "@/components/ui/separator";
 import Heading from "@/components/ui/Heading";
-import { Billboard, Store } from "@prisma/client";
+import { Billboard } from "@prisma/client";
 import { Trash } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Form,
   FormControl,
@@ -66,11 +66,10 @@ export default function BillboardForm({ billboard }: BillboardFormProps) {
           { imageUrl, label }
         );
       } else {
-        const resopnse = await axios.post(`/api/${params.storeId}/billboards`, {
+        await axios.post(`/api/${params.storeId}/billboards`, {
           imageUrl,
           label,
         });
-        console.log(resopnse.data);
       }
 
       router.refresh();
