@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import ApiAlert from "@/components/ui/ApiAlert";
 import { Separator } from "@/components/ui/separator";
 import Heading from "@/components/ui/Heading";
 import { Billboard } from "@prisma/client";
