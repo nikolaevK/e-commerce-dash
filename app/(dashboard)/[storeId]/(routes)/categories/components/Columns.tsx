@@ -29,6 +29,6 @@ export const columns: ColumnDef<CategoryColumnType>[] = [
   {
     id: "actions",
     // extract original object with which Shadcn works when renders the row => BillBoardColumnType
-    cell: ({ row }) => <RowAction billboardRow={row.original} />,
+    cell: ({ row }) => <RowAction categoryRow={row.original} />,
   },
 ];
