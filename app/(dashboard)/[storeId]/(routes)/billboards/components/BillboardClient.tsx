@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { DataTable } from "@/components/ui/DataTable";
 import { BillBoardColumnType, columns } from "./Columns";
 import { Plus } from "lucide-react";
+import ApiList from "./ApiList";
 
 interface BillBoardClientProps {
   billboards: BillBoardColumnType[];
@@ -31,6 +32,9 @@ export default function BillBoardClient({ billboards }: BillBoardClientProps) {
       </div>
       <Separator />
       <DataTable columns={columns} data={billboards} />
+      <Heading description="API calls for Billboards" title="API" />
+      <Separator />
+      <ApiList routeName="billboards" routeNameId="billboardId" />
     </>
   );
 }

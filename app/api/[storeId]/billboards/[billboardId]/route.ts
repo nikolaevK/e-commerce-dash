@@ -2,6 +2,7 @@ import prismadb from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
+// Public Route
 export async function GET(
   // need request even though it is not used
   // params come as a second argument

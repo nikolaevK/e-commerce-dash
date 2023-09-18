@@ -55,6 +55,7 @@ export async function POST(
   }
 }
 
+// Public Route
 export async function GET(
   req: Request,
   { params: { storeId } }: { params: { storeId: string } }
