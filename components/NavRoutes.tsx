@@ -24,6 +24,11 @@ export default function NavRoutes({ className, ...props }: NavRoutesInterface) {
       active: pathname === `/${storeId}/billboards`,
     },
     {
+      href: `/${storeId}/categories`,
+      label: "Categories",
+      active: pathname === `/${storeId}/categories`,
+    },
+    {
       href: `/${storeId}/settings`,
       label: "Settings",
       active: pathname === `/${storeId}/settings`,

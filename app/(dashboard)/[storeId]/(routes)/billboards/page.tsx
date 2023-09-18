@@ -2,6 +2,7 @@ import prismadb from "@/lib/prismadb";
 import { format } from "date-fns";
 import React from "react";
 import BillBoardClient from "./components/BillBoardClient";
+import { BillBoardColumnType } from "./components/Columns";
 
 interface BillBoardsInterface {
   params: { storeId: string };
@@ -19,7 +20,7 @@ export default async function Billboards({
     },
   });
 
-  const billboards = data.map((billboard) => ({
+  const billboards: BillBoardColumnType[] = data.map((billboard) => ({
     id: billboard.id,
     label: billboard.label,
     createdAt: format(billboard.createdAt, "MMMM do, yyyy"),
