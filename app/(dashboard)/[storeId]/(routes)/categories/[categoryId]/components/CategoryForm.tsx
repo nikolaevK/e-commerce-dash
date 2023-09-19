@@ -100,7 +100,7 @@ export default function CategoryForm({
       );
 
       router.refresh();
-      router.push("/");
+      router.push(`/${params.storeId}/categories`);
       toast.success("Category deleted");
     } catch (error) {
       toast.error("Make sure you remove all products");

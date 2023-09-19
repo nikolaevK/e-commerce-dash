@@ -16,36 +16,35 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-import { CategoryColumnType } from "./Columns";
+import { BillBoardColumnType } from "./Columns";
 
 interface RowActionInterface {
-  categoryRow: CategoryColumnType;
+  billboardRow: BillBoardColumnType;
 }
 
 // Individual Row
-export default function RowAction({ categoryRow }: RowActionInterface) {
+export default function RowAction({ billboardRow }: RowActionInterface) {
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-  const { createdAt, id: categoryId, name } = categoryRow;
+  const { createdAt, id: billboardId, label } = billboardRow;
   const router = useRouter();
   const params = useParams();
   const { storeId } = params;
 
   function onCopy() {
-    navigator.clipboard.writeText(categoryId);
+    navigator.clipboard.writeText(billboardId);
     toast.success("Id copied");
   }
 
   function onUpdate() {
-    router.push(`/${storeId}/categories/${categoryId}`);
+    router.push(`/${storeId}/billboards/${billboardId}`);
   }
 
   async function onDelete() {
     try {
       setLoading(true);
       toast.loading("loading...");
-      await axios.delete(`/api/${storeId}/categories/${categoryId}`);
-      console.log("RowAction");
+      await axios.delete(`/api/${storeId}/billboards/${billboardId}`);
       router.refresh();
     } catch (error) {
       toast.error("Something went wrong");
