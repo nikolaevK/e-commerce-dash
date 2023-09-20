@@ -44,7 +44,8 @@ export const columns: ColumnDef<ProductColumnType>[] = [
       <div className="flex gap-2">
         {row.original.colorValue}
         <div
-          className={`h-6 w-6 rounded-full border bg-[${row.original.colorValue}]`}
+          className="h-6 w-6 rounded-full border"
+          style={{ backgroundColor: `${row.original.colorValue}` }}
         />
       </div>
     ),
