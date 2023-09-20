@@ -8,7 +8,7 @@ interface ProductPageProps {
 export default async function ProductPage({
   params: { productId, storeId },
 }: ProductPageProps) {
-  const product = await prismadb.product.findUnique({
+  const data = await prismadb.product.findUnique({
     where: {
       id: productId,
     },
@@ -28,6 +28,9 @@ export default async function ProductPage({
       storeId,
     },
   });
+  //Only plain objects can be passed to
+  //Client Components from Server Components. Decimal objects are not supported.
+  const product = JSON.parse(JSON.stringify(data));
 
   return (
     <div className="flex flex-col">

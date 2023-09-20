@@ -16,35 +16,31 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-import { ProductColumnType } from "./Columns";
+import { ColorColumnType } from "./Columns";
 
 interface RowActionInterface {
-  productRow: ProductColumnType;
+  categoryRow: ColorColumnType;
 }
 
 // Individual Row
-export default function RowAction({ productRow }: RowActionInterface) {
+export default function RowAction({ categoryRow }: RowActionInterface) {
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-  const { id: productId } = productRow;
+  const { id: colorId } = categoryRow;
   const router = useRouter();
   const params = useParams();
   const { storeId } = params;
 
   function onCopy() {
-    navigator.clipboard.writeText(productId);
+    navigator.clipboard.writeText(colorId);
     toast.success("Id copied");
-  }
-
-  function onUpdate() {
-    router.push(`/${storeId}/products/${productId}`);
   }
 
   async function onDelete() {
     try {
       setLoading(true);
       toast.loading("loading...");
-      await axios.delete(`/api/${storeId}/products/${productId}`);
+      await axios.delete(`/api/${storeId}/colors/${colorId}`);
       router.refresh();
     } catch (error) {
       toast.error("Something went wrong");
@@ -59,9 +55,9 @@ export default function RowAction({ productRow }: RowActionInterface) {
     <>
       <AlertModal
         isOpen={confirmationModalOpen}
-        loading={loading}
         onClose={() => setConfirmationModalOpen(false)}
         onConfirm={onDelete}
+        loading={loading}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -72,18 +68,16 @@ export default function RowAction({ productRow }: RowActionInterface) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={onCopy}>
-            <Copy className="mr-2 h-4 w-4" />
-            Copy id
+            <Copy className="mr-2 h-4 w-4" /> Copy Id
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={onUpdate}>
-            <Edit className="mr-2 h-4 w-4" />
-            Update
+          <DropdownMenuItem
+            onClick={() => router.push(`/${params.storeId}/colors/${colorId}`)}
+          >
+            <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setConfirmationModalOpen(true)}>
-            <Trash className="mr-2 h-4 w-4" />
-            Delete
+            <Trash className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

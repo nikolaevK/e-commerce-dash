@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,6 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface ProductFormProps {
   product:
@@ -53,7 +55,7 @@ const formSchema = z.object({
 
 type ProductFormType = z.infer<typeof formSchema>;
 
-export default function BillboardForm({
+export default function ProductForm({
   product,
   categories,
   colors,
@@ -87,26 +89,27 @@ export default function BillboardForm({
   const toastMessage = product ? "Product updated" : "product created";
   const action = product ? "Save changes" : "Create";
 
-  async function onSubmit({ name }: ProductFormType) {
+  async function onSubmit(data: ProductFormType) {
     try {
       setLoading(true);
 
       if (product) {
         await axios.patch(
           `/api/${params.storeId}/products/${params.productId}`,
-          { name }
+          data
         );
       } else {
-        await axios.post(`/api/${params.storeId}/billboards`, {});
+        await axios.post(`/api/${params.storeId}/products`, data);
       }
 
       router.refresh();
-      router.push(`/${params.storeId}/billboards`);
+      router.push(`/${params.storeId}/products`);
       toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong");
     } finally {
       setLoading(false);
+      setOpenModal(false);
     }
   }
 
@@ -114,13 +117,11 @@ export default function BillboardForm({
     try {
       setLoading(true);
 
-      await axios.delete(
-        `/api/${params.storeId}/billboards/${params.billboardId}`
-      );
+      await axios.delete(`/api/${params.storeId}/products/${params.productId}`);
 
       router.refresh();
-      router.push("/");
-      toast.success("Billboard deleted");
+      router.push(`/${params.storeId}/products`);
+      toast.success("Product deleted");
     } catch (error) {
       toast.error("Make sure you remove all categories");
     } finally {
@@ -296,6 +297,52 @@ export default function BillboardForm({
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage
+                  // Displays the error message when invalid input
+                  />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isFeatured"
+              render={({ field }) => (
+                <FormItem className="flex items-start space-x-3 p-4 space-y-0 rounded-md border">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Featured</FormLabel>
+                    <FormDescription>
+                      This product will appear on home page
+                    </FormDescription>
+                  </div>
+                  <FormMessage
+                  // Displays the error message when invalid input
+                  />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isArchived"
+              render={({ field }) => (
+                <FormItem className="flex items-start space-x-3 p-4 space-y-0 rounded-md border">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Archived</FormLabel>
+                    <FormDescription>
+                      This product will not appear in store
+                    </FormDescription>
+                  </div>
                   <FormMessage
                   // Displays the error message when invalid input
                   />

@@ -41,7 +41,7 @@ export const columns: ColumnDef<ProductColumnType>[] = [
     accessorKey: "color",
     header: "Color",
     cell: ({ row }) => (
-      <div>
+      <div className="flex gap-2">
         {row.original.colorValue}
         <div
           className={`h-6 w-6 rounded-full border bg-[${row.original.colorValue}]`}
@@ -56,6 +56,6 @@ export const columns: ColumnDef<ProductColumnType>[] = [
   {
     id: "actions",
     // extract original object with which Shadcn works when renders the row => BillBoardColumnType
-    cell: ({ row }) => <RowAction billboardRow={row.original} />,
+    cell: ({ row }) => <RowAction productRow={row.original} />,
   },
 ];
