@@ -16,6 +16,7 @@ model Store {
   name String 
   userId String
   billboards Billboard[] @relation("StoreToBillboard")
+  homeBillboards HomeBillboard[] @relation("StoreToHomeBillboard")
   categories  Category[] @relation("StoreToCategory")
   products Product[] @relation("StoreToProduct")
   orders    Order[]  @relation("StoreToOrder")
@@ -31,6 +32,20 @@ model Billboard {
   label String
   imageUrl String
   categories Category[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId])
+}
+
+model HomeBillboard {
+  id String @id @default(uuid())
+  storeId String
+  store Store @relation("StoreToHomeBillboard", fields: [storeId], references: [id])
+  categoryName String
+  title String
+  description String
+  imageUrl String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

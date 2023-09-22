@@ -11,22 +11,26 @@ export async function POST(
     const { userId } = auth();
     const body = await req.json();
 
-    const { name, billboardId } = body;
+    const { categoryName, title, imageUrl, description } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
 
-    if (!name) {
-      return new NextResponse("Label is required", { status: 400 });
+    if (!categoryName) {
+      return new NextResponse("Category Name is required", { status: 400 });
     }
 
-    if (!billboardId) {
-      return new NextResponse("BillboardId is required", { status: 400 });
+    if (!imageUrl) {
+      return new NextResponse("Image is required", { status: 400 });
     }
 
-    if (!storeId) {
-      return new NextResponse("Store id is required", { status: 400 });
+    if (!title) {
+      return new NextResponse("Title is required", { status: 400 });
+    }
+
+    if (!description) {
+      return new NextResponse("Description is required", { status: 400 });
     }
 
     const usersStore = await prismadb.store.findFirst({
@@ -40,17 +44,19 @@ export async function POST(
       return new NextResponse("Not your store", { status: 403 });
     }
 
-    const category = await prismadb.category.create({
+    const billboard = await prismadb.homeBillboard.create({
       data: {
         storeId,
-        name,
-        billboardId,
+        imageUrl,
+        description,
+        title,
+        categoryName,
       },
     });
 
-    return NextResponse.json(category);
+    return NextResponse.json(billboard);
   } catch (error) {
-    console.log("[CATEGORY_POST]", error);
+    console.log("[BILLBOARD_POST]", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
@@ -65,23 +71,15 @@ export async function GET(
       return new NextResponse("Store id is required", { status: 400 });
     }
 
-    const category = await prismadb.category.findMany({
+    const homeBillboards = await prismadb.homeBillboard.findMany({
       where: {
         storeId,
       },
-      include: {
-        products: {
-          include: {
-            color: true,
-            images: true,
-          },
-        },
-      },
     });
 
-    return NextResponse.json(category);
+    return NextResponse.json(homeBillboards);
   } catch (error) {
-    console.log("[CATEGORY_GET]", error);
+    console.log("[HOME-BILLBOARD_GET]", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
