@@ -37,7 +37,6 @@ interface HomeBillboardFormProps {
 }
 
 const formSchema = z.object({
-  categoryName: z.string().min(5),
   title: z.string().min(3).max(35),
   description: z.string().min(3),
   imageUrl: z.string().min(3),
@@ -58,7 +57,6 @@ export default function BillboardForm({
   const form = useForm<HomeBillboardFormType>({
     resolver: zodResolver(formSchema),
     defaultValues: billboard || {
-      categoryName: "",
       imageUrl: "",
       title: "",
       description: "",
@@ -207,7 +205,7 @@ export default function BillboardForm({
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               // This allows Input field to have current store's name
               name="categoryName"
@@ -241,7 +239,7 @@ export default function BillboardForm({
                   />
                 </FormItem>
               )}
-            />
+            /> */}
           </div>
           <Button disabled={loading}>{action}</Button>
         </form>

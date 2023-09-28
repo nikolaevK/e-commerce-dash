@@ -20,7 +20,6 @@ export default async function HomeBillboard({
 
   const homeBillboard: HomeBillboardColumnType[] = data.map((billboard) => ({
     id: billboard.id,
-    categoryName: billboard.categoryName,
     title: billboard.title,
     description: billboard.description,
     imageUrl: billboard.imageUrl,

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Heading from "@/components/ui/Heading";
-import { Billboard, Category } from "@prisma/client";
+import { Billboard, Category, HomeBillboard } from "@prisma/client";
 import { Trash } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -33,11 +33,13 @@ import {
 interface CategoryFormProps {
   category: Category | null;
   billboards: Billboard[];
+  homeBillboards: HomeBillboard[];
 }
 
 const formSchema = z.object({
   name: z.string().min(3),
   billboardId: z.string().min(3),
+  homeBillboardId: z.string().optional(),
 });
 
 type CategoryFormType = z.infer<typeof formSchema>;
@@ -45,6 +47,7 @@ type CategoryFormType = z.infer<typeof formSchema>;
 export default function CategoryForm({
   category,
   billboards,
+  homeBillboards,
 }: CategoryFormProps) {
   const params = useParams();
   const router = useRouter();
@@ -57,6 +60,7 @@ export default function CategoryForm({
     defaultValues: category || {
       name: "",
       billboardId: "",
+      homeBillboardId: "",
     },
   });
 
@@ -65,19 +69,24 @@ export default function CategoryForm({
   const toastMessage = category ? "Category updated" : "Category created";
   const action = category ? "Save changes" : "Create";
 
-  async function onSubmit({ billboardId, name }: CategoryFormType) {
+  async function onSubmit({
+    billboardId,
+    name,
+    homeBillboardId,
+  }: CategoryFormType) {
     try {
       setLoading(true);
 
       if (category) {
         await axios.patch(
           `/api/${params.storeId}/categories/${params.categoryId}`,
-          { billboardId, name }
+          { billboardId, name, homeBillboardId }
         );
       } else {
         await axios.post(`/api/${params.storeId}/categories`, {
           billboardId,
           name,
+          homeBillboardId,
         });
       }
 
@@ -188,6 +197,41 @@ export default function CategoryForm({
                       {billboards.map((billboard) => (
                         <SelectItem key={billboard.id} value={billboard.id}>
                           {billboard.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage
+                  // Displays the error message when invalid input
+                  />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              // This allows Input field to have current store's name
+              name="homeBillboardId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Home Billboard</FormLabel>
+                  <Select
+                    disabled={loading}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder="Select a billboard"
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {homeBillboards.map((billboard) => (
+                        <SelectItem key={billboard.id} value={billboard.id}>
+                          {billboard.title}
                         </SelectItem>
                       ))}
                     </SelectContent>

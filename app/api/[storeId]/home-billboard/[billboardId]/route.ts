@@ -36,14 +36,10 @@ export async function PATCH(
   try {
     const { userId } = auth();
     const body = await req.json();
-    const { description, title, categoryName, imageUrl } = body;
+    const { description, title, imageUrl } = body;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
-    }
-
-    if (!categoryName) {
-      return new NextResponse("Category name is required", { status: 400 });
     }
 
     if (!imageUrl) {
@@ -77,7 +73,6 @@ export async function PATCH(
         title,
         description,
         imageUrl,
-        categoryName,
       },
     });
 

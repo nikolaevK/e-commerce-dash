@@ -11,11 +11,17 @@ export async function POST(
     const { userId } = auth();
     const body = await req.json();
 
-    const { name, billboardId } = body;
+    const { name, billboardId, homeBillboardId } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
+
+    // if (!homeBillboardId) {
+    //   return new NextResponse("Home billboard label is required", {
+    //     status: 400,
+    //   });
+    // }
 
     if (!name) {
       return new NextResponse("Label is required", { status: 400 });
@@ -45,6 +51,7 @@ export async function POST(
         storeId,
         name,
         billboardId,
+        homeBillboardId,
       },
     });
 

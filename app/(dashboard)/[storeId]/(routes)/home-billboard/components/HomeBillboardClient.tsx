@@ -33,11 +33,7 @@ export default function HomeBillboardClient({
         </Button>
       </div>
       <Separator />
-      <DataTable
-        searchKey="categoryName"
-        columns={columns}
-        data={homeBillboard}
-      />
+      <DataTable searchKey="title" columns={columns} data={homeBillboard} />
       <Heading description="API calls for Products" title="API" />
       <Separator />
       <ApiList routeName="home-billboard" routeNameId="billboardId" />

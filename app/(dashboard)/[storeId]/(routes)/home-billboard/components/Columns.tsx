@@ -7,7 +7,6 @@ import RowAction from "./RowAction";
 // You can use a Zod schema here if you want.
 export type HomeBillboardColumnType = {
   id: string;
-  categoryName: string;
   title: string;
   description: string;
   imageUrl: string;
@@ -15,10 +14,6 @@ export type HomeBillboardColumnType = {
 };
 
 export const columns: ColumnDef<HomeBillboardColumnType>[] = [
-  {
-    accessorKey: "categoryName",
-    header: "Category",
-  },
   {
     accessorKey: "title",
     header: "Title",

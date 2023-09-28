@@ -11,14 +11,10 @@ export async function POST(
     const { userId } = auth();
     const body = await req.json();
 
-    const { categoryName, title, imageUrl, description } = body;
+    const { title, imageUrl, description } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
-    }
-
-    if (!categoryName) {
-      return new NextResponse("Category Name is required", { status: 400 });
     }
 
     if (!imageUrl) {
@@ -50,7 +46,6 @@ export async function POST(
         imageUrl,
         description,
         title,
-        categoryName,
       },
     });
 

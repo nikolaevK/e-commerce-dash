@@ -36,10 +36,16 @@ export async function PATCH(
   try {
     const { userId } = auth();
     const body = await req.json();
-    const { billboardId, name } = body;
+    const { billboardId, name, homeBillboardId } = body;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    if (!homeBillboardId) {
+      return new NextResponse("Home billboard label is required", {
+        status: 400,
+      });
     }
 
     if (!name) {
@@ -72,6 +78,7 @@ export async function PATCH(
       data: {
         name,
         billboardId,
+        homeBillboardId,
       },
     });
 
