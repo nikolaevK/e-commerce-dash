@@ -23,13 +23,6 @@ import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import AlertModal from "@/components/modals/AlertModal";
 import ImageUpload from "@/components/ui/ImageUpload";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 interface HomeBillboardFormProps {
   billboard: HomeBillboard;

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Heading from "@/components/ui/Heading";
-import { Billboard, Category, HomeBillboard } from "@prisma/client";
+import { HomeBillboard, Subcategories } from "@prisma/client";
 import { Trash } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -30,73 +30,74 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface CategoryFormProps {
-  category: Category | null;
-  billboards: Billboard[];
+interface SubcategoryFormProps {
+  subcategory: Subcategories;
   homeBillboards: HomeBillboard[];
 }
 
 const formSchema = z.object({
-  name: z.string().min(3),
-  billboardId: z.string().min(3),
-  homeBillboardId: z.string().optional(),
+  homeBillboardId: z.string().min(7),
+  subcategory1: z.string().min(3).max(25),
+  subcategory2: z.string().min(3).max(25),
+  subcategory3: z.string().min(3).max(25),
+  description1: z.string().min(3).max(85),
+  description2: z.string().min(3).max(85),
+  description3: z.string().min(3).max(85),
 });
 
-type CategoryFormType = z.infer<typeof formSchema>;
+type SubcategoriesFormType = z.infer<typeof formSchema>;
 
-export default function CategoryForm({
-  category,
-  billboards,
+export default function SubcategoryForm({
   homeBillboards,
-}: CategoryFormProps) {
+  subcategory,
+}: SubcategoryFormProps) {
   const params = useParams();
   const router = useRouter();
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [url, setUrl] = useState("");
 
-  const form = useForm<CategoryFormType>({
+  const form = useForm<SubcategoriesFormType>({
     resolver: zodResolver(formSchema),
-    defaultValues: category || {
-      name: "",
-      billboardId: "",
+    defaultValues: subcategory || {
       homeBillboardId: "",
+      subcategory1: "",
+      subcategory2: "",
+      subcategory3: "",
+      description1: "",
+      description2: "",
+      description3: "",
     },
   });
 
-  const title = category ? "Edit category" : "Create category";
-  const description = category ? "Edit category" : "Add new category";
-  const toastMessage = category ? "Category updated" : "Category created";
-  const action = category ? "Save changes" : "Create";
+  const title = subcategory ? "Edit subcategory" : "Create subcategory";
+  const description = subcategory ? "Edit subcategory" : "Add new subcategory";
+  const toastMessage = subcategory
+    ? "Subcategory updated"
+    : "Subcategory created";
+  const action = subcategory ? "Save changes" : "Create";
 
-  async function onSubmit({
-    billboardId,
-    name,
-    homeBillboardId,
-  }: CategoryFormType) {
+  async function onSubmit(data: SubcategoriesFormType) {
     try {
       setLoading(true);
 
-      if (category) {
+      if (subcategory) {
         await axios.patch(
-          `/api/${params.storeId}/categories/${params.categoryId}`,
-          { billboardId, name, homeBillboardId }
+          `/api/${params.storeId}/subcategories/${params.subcategoryId}`,
+          data
         );
       } else {
-        await axios.post(`/api/${params.storeId}/categories`, {
-          billboardId,
-          name,
-          homeBillboardId,
-        });
+        await axios.post(`/api/${params.storeId}/subcategories`, data);
       }
 
       router.refresh();
-      router.push(`/${params.storeId}/categories`);
+      router.push(`/${params.storeId}/subcategories`);
       toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong");
     } finally {
       setLoading(false);
+      setOpenModal(false);
     }
   }
 
@@ -105,14 +106,14 @@ export default function CategoryForm({
       setLoading(true);
 
       await axios.delete(
-        `/api/${params.storeId}/categories/${params.categoryId}`
+        `/api/${params.storeId}/subcategories/${params.subcategoryId}`
       );
 
       router.refresh();
-      router.push(`/${params.storeId}/categories`);
-      toast.success("Category deleted");
+      router.push(`/${params.storeId}/subcategories`);
+      toast.success("Subcategory deleted");
     } catch (error) {
-      toast.error("Make sure you remove all products");
+      toast.error("Cannot delete");
     } finally {
       setLoading(false);
       setOpenModal(false);
@@ -134,7 +135,7 @@ export default function CategoryForm({
       />
       <div className="flex items-center justify-between">
         <Heading title={title} description={description} />
-        {category && (
+        {subcategory && (
           <Button
             variant="destructive"
             size="sm"
@@ -155,16 +156,12 @@ export default function CategoryForm({
             <FormField
               control={form.control}
               // This allows Input field to have current store's name
-              name="name"
+              name="subcategory1"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Subcategory 1</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder="Category name"
-                      {...field}
-                    />
+                    <Input disabled={loading} placeholder="title" {...field} />
                   </FormControl>
                   <FormMessage
                   // Displays the error message when invalid input
@@ -175,29 +172,77 @@ export default function CategoryForm({
             <FormField
               control={form.control}
               // This allows Input field to have current store's name
-              name="billboardId"
+              name="subcategory2"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Billboard</FormLabel>
-                  <Select
-                    disabled={loading}
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue defaultValue={field.value} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {billboards.map((billboard) => (
-                        <SelectItem key={billboard.id} value={billboard.id}>
-                          {billboard.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>Subcategory 2</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="title" {...field} />
+                  </FormControl>
+                  <FormMessage
+                  // Displays the error message when invalid input
+                  />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              // This allows Input field to have current store's name
+              name="subcategory3"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Subcategory 3</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="title" {...field} />
+                  </FormControl>
+                  <FormMessage
+                  // Displays the error message when invalid input
+                  />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              // This allows Input field to have current store's name
+              name="description1"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description 1</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="title" {...field} />
+                  </FormControl>
+                  <FormMessage
+                  // Displays the error message when invalid input
+                  />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              // This allows Input field to have current store's name
+              name="description2"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description 2</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="title" {...field} />
+                  </FormControl>
+                  <FormMessage
+                  // Displays the error message when invalid input
+                  />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              // This allows Input field to have current store's name
+              name="description3"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description 3</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="title" {...field} />
+                  </FormControl>
                   <FormMessage
                   // Displays the error message when invalid input
                   />
@@ -210,7 +255,7 @@ export default function CategoryForm({
               name="homeBillboardId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Home Billboard &#40;Optional&#41;</FormLabel>
+                  <FormLabel>HomeBillboard</FormLabel>
                   <Select
                     disabled={loading}
                     onValueChange={field.onChange}
@@ -221,7 +266,7 @@ export default function CategoryForm({
                       <SelectTrigger>
                         <SelectValue
                           defaultValue={field.value}
-                          placeholder="Optional"
+                          placeholder="Select home billboard"
                         />
                       </SelectTrigger>
                     </FormControl>

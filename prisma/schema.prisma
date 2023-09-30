@@ -21,6 +21,7 @@ model Store {
   products Product[] @relation("StoreToProduct")
   orders    Order[]  @relation("StoreToOrder")
   colors          Color[]     @relation("StoreToColor")
+  subcategories Subcategories[] @relation("StoreToSubcategory")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -38,11 +39,14 @@ model Billboard {
   @@index([storeId])
 }
 
+
+
 model HomeBillboard {
   id String @id @default(uuid())
   storeId String
   store Store @relation("StoreToHomeBillboard", fields: [storeId], references: [id])
   categories Category[]  
+  subcategories Subcategories?
   title String
   description String
   imageUrl String
@@ -51,6 +55,23 @@ model HomeBillboard {
 
   @@index([storeId])
 
+}
+
+model Subcategories {
+  id String @id @default(uuid())
+  storeId String
+  store Store @relation("StoreToSubcategory", fields: [storeId], references: [id])
+  homeBillboard HomeBillboard @relation(fields: [homeBillboardId],references:[id])
+  homeBillboardId String @unique
+  subcategory1 String
+  subcategory2 String
+  subcategory3 String
+  description1 String
+  description2 String
+  description3 String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([storeId])
 }
 
 model Category {

@@ -24,9 +24,19 @@ export default function NavRoutes({ className, ...props }: NavRoutesInterface) {
       active: pathname === `/${storeId}/billboards`,
     },
     {
+      href: `/${storeId}/home-billboard`,
+      label: "Home Billboards",
+      active: pathname === `/${storeId}/home-billboard`,
+    },
+    {
       href: `/${storeId}/categories`,
       label: "Categories",
       active: pathname === `/${storeId}/categories`,
+    },
+    {
+      href: `/${storeId}/subcategories`,
+      label: "Subcategories",
+      active: pathname === `/${storeId}/subcategories`,
     },
     {
       href: `/${storeId}/colors`,
@@ -38,11 +48,7 @@ export default function NavRoutes({ className, ...props }: NavRoutesInterface) {
       label: "Products",
       active: pathname === `/${storeId}/products`,
     },
-    {
-      href: `/${storeId}/home-billboard`,
-      label: "Home Billboards",
-      active: pathname === `/${storeId}/home-billboard`,
-    },
+
     {
       href: `/${storeId}/orders`,
       label: "Orders",
