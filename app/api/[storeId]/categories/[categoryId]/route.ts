@@ -18,6 +18,14 @@ export async function GET(
       where: {
         id: categoryId,
       },
+      include: {
+        products: {
+          include: {
+            color: true,
+            images: true,
+          },
+        },
+      },
     });
 
     return NextResponse.json(category);
