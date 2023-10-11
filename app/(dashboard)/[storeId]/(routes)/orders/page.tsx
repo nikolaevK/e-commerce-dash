@@ -36,7 +36,7 @@ export default async function Orders({ params: { storeId } }: OrdersInterface) {
       .join(", "),
     totalPrice: formatCurrency.format(
       order.orderItems.reduce((total, orderItem) => {
-        return total + Number(orderItem.product.price);
+        return total + Number(orderItem.product.price) * orderItem.quantity;
       }, 0)
     ),
     createdAt: format(order.createdAt, "MMMM do, yyyy"),

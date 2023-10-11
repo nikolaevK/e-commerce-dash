@@ -19,6 +19,7 @@ export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders });
 }
 
+// TODO: Add Stripe Events (Webhooks) to update successful payment
 export async function POST(
   req: Request,
   { params }: { params: { storeId: string } }
@@ -59,12 +60,13 @@ export async function POST(
       storeId: params.storeId,
       isPaid: false,
       orderItems: {
-        create: productIds.map((productId: string) => ({
+        create: cartItems.map((product: CartItem) => ({
           product: {
             connect: {
-              id: productId,
+              id: product.id,
             },
           },
+          quantity: product.quantity,
         })),
       },
     },

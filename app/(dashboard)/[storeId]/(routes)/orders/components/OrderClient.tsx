@@ -1,5 +1,4 @@
 "use client";
-import { useParams, useRouter } from "next/navigation";
 
 import Heading from "@/components/ui/Heading";
 import { Separator } from "@/components/ui/separator";
@@ -18,7 +17,7 @@ export default function OrderClient({ orders }: OrderClientProps) {
         title={`Orders (${orders.length})`}
       />
       <Separator />
-      <DataTable searchKey="products" columns={columns} data={orders} />
+      <DataTable columns={columns} data={orders} />
     </>
   );
 }
