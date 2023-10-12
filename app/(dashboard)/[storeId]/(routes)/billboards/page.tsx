@@ -1,7 +1,7 @@
 import prismadb from "@/lib/prismadb";
 import { format } from "date-fns";
 import React from "react";
-import BillBoardClient from "./components/BillBoardClient";
+import BillBoardClient from "./components/BillboardClient";
 import { BillBoardColumnType } from "./components/Columns";
 
 interface BillBoardsInterface {

@@ -33,7 +33,11 @@ export default function SubcategoriesClient({
         </Button>
       </div>
       <Separator />
-      <DataTable columns={columns} data={subcategories} />
+      <DataTable
+        searchKey="subcategory1"
+        columns={columns}
+        data={subcategories}
+      />
       <Heading description="API calls for Subcategories" title="API" />
       <Separator />
       <ApiList routeName="subcategories" routeNameId="subcategoryId" />

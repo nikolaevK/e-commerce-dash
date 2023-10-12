@@ -17,7 +17,7 @@ export default function OrderClient({ orders }: OrderClientProps) {
         title={`Orders (${orders.length})`}
       />
       <Separator />
-      <DataTable columns={columns} data={orders} />
+      <DataTable searchKey="name" columns={columns} data={orders} />
     </>
   );
 }

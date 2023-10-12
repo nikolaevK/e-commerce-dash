@@ -31,7 +31,7 @@ export default function BillBoardClient({ billboards }: BillBoardClientProps) {
         </Button>
       </div>
       <Separator />
-      <DataTable columns={columns} data={billboards} />
+      <DataTable searchKey="label" columns={columns} data={billboards} />
       <Heading description="API calls for Billboards" title="API" />
       <Separator />
       <ApiList routeName="billboards" routeNameId="billboardId" />
