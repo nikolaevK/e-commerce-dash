@@ -15,7 +15,7 @@ export default function ApiList({ routeName, routeNameId }: ApiListInterface) {
   useEffect(() => {
     const origin = window.location.origin;
     setBaseURL(`${origin}/api/${storeId}`);
-  }, []);
+  }, [storeId]);
 
   return (
     <>
