@@ -1,5 +1,5 @@
 import prismadb from "@/lib/prismadb";
-
+//
 export async function getGraphRevenue(storeId: string) {
   const paidOrders = await prismadb.order.findMany({
     where: {
